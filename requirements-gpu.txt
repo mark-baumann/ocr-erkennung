@@ -1,0 +1,22 @@
+# DeepSeek-OCR benötigt CUDA. Diese Datei ZUSÄTZLICH zu requirements.txt
+# installieren, und zwar auf einer Maschine mit NVIDIA-GPU.
+#
+#   pip install -r requirements.txt
+#   pip install torch==2.6.0 torchvision==0.21.0 --index-url https://download.pytorch.org/whl/cu118
+#   pip install -r requirements-gpu.txt
+#
+# Versionen folgen der Referenz-Umgebung des Upstream-Repos.
+
+transformers>=4.46.3
+tokenizers>=0.20.3
+einops
+easydict
+addict
+img2pdf
+
+# Optional, aber empfohlen — ~2x schneller als eager attention:
+#   pip install flash-attn==2.7.3 --no-build-isolation
+
+# Optional: vLLM-Backend für echtes Batching über viele Seiten.
+# DeepSeek-OCR wird ab vLLM 0.11.1 nativ unterstützt.
+#   pip install "vllm>=0.11.1"
