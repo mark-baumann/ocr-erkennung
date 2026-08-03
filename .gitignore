@@ -13,3 +13,5 @@ checkpoints/
 *.jsonl
 uv.lock
 .DS_Store
+.venv
+*.pyc
