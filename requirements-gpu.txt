@@ -1,7 +1,7 @@
-# DeepSeek-OCR benötigt CUDA. Diese Datei ZUSÄTZLICH zu requirements.txt
+# DeepSeek-OCR benötigt CUDA. Diese Datei zusätzlich zum Paket installieren
 # installieren, und zwar auf einer Maschine mit NVIDIA-GPU.
 #
-#   pip install -r requirements.txt
+#   pip install -e .
 #   pip install torch==2.6.0 torchvision==0.21.0 --index-url https://download.pytorch.org/whl/cu118
 #   pip install -r requirements-gpu.txt
 #

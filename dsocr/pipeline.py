@@ -2,8 +2,7 @@
 
 Upstream ships three near-duplicate scripts (image / pdf / eval-batch) that each
 re-implement load → preprocess → generate → postprocess. This module has that
-flow exactly once, so the Streamlit UI, the CLI and the tests all take the same
-code path.
+flow exactly once, so the notebook, CLI and tests all take the same code path.
 """
 
 from __future__ import annotations
@@ -20,7 +19,7 @@ from .postprocess.markdown import CleanedOutput, ExtractedTable, clean_output, e
 from .preprocess.loader import Page
 from .preprocess.tiling import TilingPlan, plan_tiling
 
-#: ``(page_index, total_pages, label)`` — used to drive the Streamlit progress bar.
+#: ``(page_index, total_pages, label)`` — used by interactive callers for progress.
 ProgressCallback = Callable[[int, int, str], None]
 
 

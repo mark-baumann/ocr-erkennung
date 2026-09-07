@@ -1,9 +1,0 @@
-# --- App (läuft überall, auch ohne GPU) ---
-streamlit>=1.40
-pillow>=10.0
-numpy>=1.24
-pymupdf>=1.24          # PDF-Rasterung
-markdown>=3.5          # HTML-Export (optionaler Fallback ist eingebaut)
-
-# --- Tests ---
-pytest>=8.0

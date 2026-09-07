@@ -1,4 +1,4 @@
-"""DeepSeek-OCR Studio — a Streamlit front end around DeepSeek-OCR.
+"""Headless DeepSeek-OCR pipeline for notebooks and batch processing.
 
 The heavy lifting lives in three layers:
 
