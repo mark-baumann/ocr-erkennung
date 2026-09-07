@@ -16,7 +16,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-gpu = ["transformers>=4.46.3", "tokenizers>=0.20.3", "einops", "easydict", "addict"]
+gpu = ["transformers==4.46.3", "tokenizers>=0.20.3,<0.21", "einops", "easydict", "addict"]
 dev = ["pytest>=8.0"]
 
 [project.scripts]
