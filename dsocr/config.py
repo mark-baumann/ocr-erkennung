@@ -2,8 +2,8 @@
 
 Upstream DeepSeek-OCR keeps these as module level constants in
 ``DeepSeek-OCR-vllm/config.py`` which has to be edited by hand before every run.
-Here they become first class objects so the Streamlit UI can offer them as
-choices and the engines can consume them uniformly.
+Here they become first class objects that notebooks, the CLI and the engines
+can consume uniformly.
 """
 
 from __future__ import annotations
