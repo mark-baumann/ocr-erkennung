@@ -31,7 +31,7 @@
 git clone https://github.com/mark-baumann/ocr_recognition_nn.git
 cd ocr_recognition_nn
 pip install -e .
-jupyter notebook desktop/ocr_colab.ipynb
+jupyter notebook ocr_colab.ipynb
 ```
 
 ### Mit GPU — echtes DeepSeek-OCR
@@ -42,7 +42,7 @@ pip install torch==2.6.0 torchvision==0.21.0 --index-url https://download.pytorc
 pip install -r requirements-gpu.txt
 pip install flash-attn==2.7.3 --no-build-isolation   # optional, ~2x schneller
 pip install "vllm>=0.11.1"                            # optional, Batch-Backend
-jupyter notebook desktop/ocr_colab.ipynb
+jupyter notebook ocr_colab.ipynb
 ```
 
 ### Docker
@@ -59,7 +59,7 @@ docker run --gpus all -p 8501:8501 -v deepseek-models:/models deepseek-ocr-studi
 ### Google Colab
 
 ```bash
-https://colab.research.google.com/github/mark-baumann/ocr-erkennung/blob/claude/deepseek-ocr-streamlit-46tyl3/desktop/ocr_colab.ipynb
+https://colab.research.google.com/github/mark-baumann/ocr-erkennung/blob/claude/deepseek-ocr-streamlit-46tyl3/ocr_colab.ipynb
 ```
 
 In Colab zuerst eine GPU-Laufzeit aktivieren. Das Notebook installiert das Projekt und die GPU-Abhängigkeiten, fragt anschließend Bild- oder PDF-Dateien ab und lädt ein ZIP mit Markdown, Text, Layout-JSON und Seiten-Ergebnissen herunter.
@@ -107,8 +107,7 @@ python -m dsocr.cli rechnung.png --prompt locate --query "Gesamtsumme" -o out/
 
 ```
 ocr_recognition_nn/
-├── desktop/
-│   └── ocr_colab.ipynb             # Google-Colab-Einstiegspunkt
+├── ocr_colab.ipynb                  # Google-Colab-Einstiegspunkt
 ├── dsocr/
 │   ├── config.py                   # Auflösungsmodi, Prompts, Settings
 │   ├── pipeline.py                 # Orchestrierung
