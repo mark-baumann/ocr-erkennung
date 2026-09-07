@@ -2,7 +2,6 @@
 
 [![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)](https://python.org)
 [![DeepSeek](https://img.shields.io/badge/Modell-DeepSeek--OCR-purple)](https://github.com/deepseek-ai/DeepSeek-OCR)
-[![Tests](https://img.shields.io/badge/Tests-139%20passed-green?logo=pytest)](https://pytest.org)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 **Headless DeepSeek-OCR-Pipeline für Jupyter Notebook und Batch-Verarbeitung.** Das Vision-Language-Modell komprimiert Dokumentseiten in wenige hundert Vision-Tokens und liest sie direkt als Markdown zurück.
@@ -20,7 +19,6 @@
 - **🖼️ Encoder-Sicht:** Kachelraster-Overlay zur Überprüfung des Auflösungsmodus
 - **💾 Multi-Export:** Markdown, Text, HTML, Layout-JSON, CSVs, Abbildungen, ZIP
 - **⚡ Drei Backends:** vLLM (Batch), Transformers (Einzelseiten), Demo (CPU)
-- **🧪 139 Tests:** Tiling, Grounding-Parser, Markdown, Exporte, Fehlerbehandlung
 - **🐳 Docker:** Mit GPU-Passthrough und Modell-Caching
 
 ---
@@ -33,7 +31,7 @@
 git clone https://github.com/mark-baumann/ocr_recognition_nn.git
 cd ocr_recognition_nn
 pip install -e .
-jupyter notebook desktop/ocr_demo.ipynb
+jupyter notebook desktop/ocr_colab.ipynb
 ```
 
 ### Mit GPU — echtes DeepSeek-OCR
@@ -44,7 +42,7 @@ pip install torch==2.6.0 torchvision==0.21.0 --index-url https://download.pytorc
 pip install -r requirements-gpu.txt
 pip install flash-attn==2.7.3 --no-build-isolation   # optional, ~2x schneller
 pip install "vllm>=0.11.1"                            # optional, Batch-Backend
-jupyter notebook desktop/ocr_demo.ipynb
+jupyter notebook desktop/ocr_colab.ipynb
 ```
 
 ### Docker
@@ -58,13 +56,13 @@ docker run --gpus all -p 8501:8501 -v deepseek-models:/models deepseek-ocr-studi
 
 ## 🖥️ Nutzung
 
-### Jupyter Notebook
+### Google Colab
 
 ```bash
-jupyter notebook desktop/ocr_demo.ipynb
+https://colab.research.google.com/github/mark-baumann/ocr-erkennung/blob/claude/deepseek-ocr-streamlit-46tyl3/desktop/ocr_colab.ipynb
 ```
 
-Im ersten Codeblock `INPUT_FILE` auf ein Bild oder PDF setzen. Mit `BACKEND = "demo"` läuft das Notebook ohne GPU; `BACKEND = "auto"` verwendet das beste verfügbare Backend.
+In Colab zuerst eine GPU-Laufzeit aktivieren. Das Notebook installiert das Projekt und die GPU-Abhängigkeiten, fragt anschließend Bild- oder PDF-Dateien ab und lädt ein ZIP mit Markdown, Text, Layout-JSON und Seiten-Ergebnissen herunter.
 
 ### CLI
 
@@ -77,12 +75,6 @@ python -m dsocr.cli scans/*.pdf -o out/ --mode gundam --prompt markdown --zip
 
 # Textstelle lokalisieren
 python -m dsocr.cli rechnung.png --prompt locate --query "Gesamtsumme" -o out/
-```
-
-### Tests
-
-```bash
-python -m pytest tests/ -q     # 139 Tests, ~4 s, keine GPU nötig
 ```
 
 ---
@@ -116,7 +108,7 @@ python -m pytest tests/ -q     # 139 Tests, ~4 s, keine GPU nötig
 ```
 ocr_recognition_nn/
 ├── desktop/
-│   └── ocr_demo.ipynb              # Jupyter-Einstiegspunkt
+│   └── ocr_colab.ipynb             # Google-Colab-Einstiegspunkt
 ├── dsocr/
 │   ├── config.py                   # Auflösungsmodi, Prompts, Settings
 │   ├── pipeline.py                 # Orchestrierung
@@ -124,7 +116,6 @@ ocr_recognition_nn/
 │   ├── preprocess/                 # Loader, Tiling, Token-Rechnung
 │   ├── engines/                    # vLLM, Transformers, Demo
 │   ├── postprocess/                # Grounding, Markdown, Export
-├── tests/                          # 139 Tests
 ├── assets/                         # Screenshots
 ├── Dockerfile
 └── requirements-gpu.txt
