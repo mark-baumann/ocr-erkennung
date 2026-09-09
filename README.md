@@ -1,12 +1,13 @@
-# 🔍 OCR Recognition NN — DeepSeek-OCR Studio
+# 🔍 OCR Recognition NN — DeepSeek-OCR
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mark-baumann/ocr-erkennung/blob/claude/deepseek-ocr-streamlit-46tyl3/ocr_colab.ipynb)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)](https://python.org)
 [![DeepSeek](https://img.shields.io/badge/Modell-DeepSeek--OCR-purple)](https://github.com/deepseek-ai/DeepSeek-OCR)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-**Headless DeepSeek-OCR-Pipeline für Jupyter Notebook und Batch-Verarbeitung.** Das Vision-Language-Modell komprimiert Dokumentseiten in wenige hundert Vision-Tokens und liest sie direkt als Markdown zurück.
+**Handschrift- und Dokument-Erkennung (OCR) ohne App — Google-Colab-fähig und headless.** Das Vision-Language-Modell DeepSeek-OCR komprimiert Dokumentseiten in wenige hundert Vision-Tokens und liest sie direkt als Markdown zurück — auch Handschrift.
 
-> Basiert auf [DeepSeek-OCR](https://github.com/deepseek-ai/DeepSeek-OCR). Erweitert um ein Jupyter-Notebook, eine CLI, CPU-Fallback und Tests.
+> Basiert auf [DeepSeek-OCR](https://github.com/deepseek-ai/DeepSeek-OCR). Erweitert um ein Google-Colab-Notebook, eine CLI und CPU-Fallback. Keine Streamlit-App, keine GUI.
 
 ---
 
@@ -25,11 +26,11 @@
 
 ## 🚀 Installation
 
-### Ohne GPU — Notebook und Tests
+### Ohne GPU — Notebook und CLI
 
 ```bash
-git clone https://github.com/mark-baumann/ocr_recognition_nn.git
-cd ocr_recognition_nn
+git clone https://github.com/mark-baumann/ocr-erkennung.git
+cd ocr-erkennung
 pip install -e .
 jupyter notebook ocr_colab.ipynb
 ```
@@ -48,9 +49,11 @@ jupyter notebook ocr_colab.ipynb
 ### Docker
 
 ```bash
-docker build -t deepseek-ocr-studio .
-docker run --gpus all -p 8501:8501 -v deepseek-models:/models deepseek-ocr-studio
+docker build -t deepseek-ocr .
+docker run --rm -v $(pwd)/scans:/in -v $(pwd)/out:/out deepseek-ocr /in/rechnung.png -o /out --mode gundam --prompt markdown --zip
 ```
+
+> Das Image startet die headless CLI (`python -m dsocr.cli`), nicht mehr eine Streamlit-App.
 
 ---
 
@@ -58,11 +61,15 @@ docker run --gpus all -p 8501:8501 -v deepseek-models:/models deepseek-ocr-studi
 
 ### Google Colab
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mark-baumann/ocr-erkennung/blob/claude/deepseek-ocr-streamlit-46tyl3/ocr_colab.ipynb)
+
+Direkt im Browser öffnen:
+
 ```bash
 https://colab.research.google.com/github/mark-baumann/ocr-erkennung/blob/claude/deepseek-ocr-streamlit-46tyl3/ocr_colab.ipynb
 ```
 
-In Colab zuerst eine GPU-Laufzeit aktivieren. Das Notebook installiert das Projekt und die GPU-Abhängigkeiten, fragt anschließend Bild- oder PDF-Dateien ab und lädt ein ZIP mit Markdown, Text, Layout-JSON und Seiten-Ergebnissen herunter.
+In Colab zuerst eine GPU-Laufzeit aktivieren (Laufzeit > Laufzeittyp ändern → GPU). Das Notebook installiert das Projekt und die GPU-Abhängigkeiten, fragt anschließend Bild- oder PDF-Dateien ab und lädt ein ZIP mit Markdown, Text, Layout-JSON und Seiten-Ergebnissen herunter.
 
 ### CLI
 
@@ -106,7 +113,7 @@ python -m dsocr.cli rechnung.png --prompt locate --query "Gesamtsumme" -o out/
 ## 📁 Projektstruktur
 
 ```
-ocr_recognition_nn/
+ocr-erkennung/
 ├── ocr_colab.ipynb                  # Google-Colab-Einstiegspunkt
 ├── dsocr/
 │   ├── config.py                   # Auflösungsmodi, Prompts, Settings
