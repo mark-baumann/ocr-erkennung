@@ -1,4 +1,4 @@
-# GPU-Image für die DeepSeek-OCR-Batch-Pipeline.
+# GPU-Image für DeepSeek-OCR Studio (Streamlit-GUI + headless CLI).
 FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -21,8 +21,19 @@ RUN pip install --upgrade pip \
 
 COPY pyproject.toml requirements-gpu.txt README.md ./
 COPY dsocr ./dsocr
-RUN pip install -e . -r requirements-gpu.txt
+RUN pip install -e ".[app]" -r requirements-gpu.txt
 
 COPY . .
 
-ENTRYPOINT ["python", "-m", "dsocr.cli"]
+# Port (pro App anpassen: 8513). ARG allein reicht nicht: CMD/HEALTHCHECK
+# laufen zur Container-Laufzeit und lesen $PORT vom Environment — als ENV
+# re-exportieren (Muster wie im rag-agent-langgraph Dockerfile).
+ARG PORT=8513
+ENV PORT=$PORT
+EXPOSE $PORT
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=90s --retries=3 \
+    CMD python -c "import os,urllib.request;urllib.request.urlopen('http://localhost:%s/_stcore/health' % os.environ['PORT'])"
+
+# Streamlit-GUI als Default; headless CLI weiterhin: docker run ... python -m dsocr.cli ...
+CMD ["sh", "-c", "streamlit run app/app.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true"]

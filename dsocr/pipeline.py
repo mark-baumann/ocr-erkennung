@@ -2,7 +2,7 @@
 
 Upstream ships three near-duplicate scripts (image / pdf / eval-batch) that each
 re-implement load → preprocess → generate → postprocess. This module has that
-flow exactly once, so the notebook, CLI and tests all take the same code path.
+flow exactly once, so the Streamlit UI, the notebook, CLI and tests all take the same code path.
 """
 
 from __future__ import annotations

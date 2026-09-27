@@ -1,18 +1,19 @@
-# 🔍 OCR Recognition NN — DeepSeek-OCR
+# 🔍 OCR Recognition NN — DeepSeek-OCR Studio
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mark-baumann/ocr-erkennung/blob/claude/deepseek-ocr-streamlit-46tyl3/ocr_colab.ipynb)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)](https://python.org)
 [![DeepSeek](https://img.shields.io/badge/Modell-DeepSeek--OCR-purple)](https://github.com/deepseek-ai/DeepSeek-OCR)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-**Handschrift- und Dokument-Erkennung (OCR) ohne App — Google-Colab-fähig und headless.** Das Vision-Language-Modell DeepSeek-OCR komprimiert Dokumentseiten in wenige hundert Vision-Tokens und liest sie direkt als Markdown zurück — auch Handschrift.
+**Handschrift- und Dokument-Erkennung (OCR) mit Streamlit-GUI — zusätzlich Google-Colab-fähig und headless.** Das Vision-Language-Modell DeepSeek-OCR komprimiert Dokumentseiten in wenige hundert Vision-Tokens und liest sie direkt als Markdown zurück — auch Handschrift.
 
-> Basiert auf [DeepSeek-OCR](https://github.com/deepseek-ai/DeepSeek-OCR). Erweitert um ein Google-Colab-Notebook, eine CLI und CPU-Fallback. Keine Streamlit-App, keine GUI.
+> Basiert auf [DeepSeek-OCR](https://github.com/deepseek-ai/DeepSeek-OCR). Erweitert um eine Streamlit-GUI (AUG-241), ein Google-Colab-Notebook, eine CLI und CPU-Fallback.
 
 ---
 
 ## ✨ Features
 
+- **🖥️ Streamlit-GUI:** Upload, Token-Budget, Encoder-Sicht, Layout-Overlay und Exporte direkt im Browser
 - **📄 Multi-Format:** Bilder (PNG, JPG) und PDFs (mehrseitig)
 - **🎯 Layout-Grounding:** Bounding-Boxen für Titel, Text, Tabellen, Abbildungen
 - **📊 Tabellen-Export:** Erkannte Tabellen als DataFrame + CSV
@@ -26,38 +27,53 @@
 
 ## 🚀 Installation
 
-### Ohne GPU — Notebook und CLI
+### Ohne GPU — GUI, Notebook und CLI
 
 ```bash
 git clone https://github.com/mark-baumann/ocr-erkennung.git
 cd ocr-erkennung
-pip install -e .
-jupyter notebook ocr_colab.ipynb
+pip install -e ".[app]"
+streamlit run app/app.py
 ```
 
 ### Mit GPU — echtes DeepSeek-OCR
 
 ```bash
-pip install -e .
+pip install -e ".[app]"
 pip install torch==2.6.0 torchvision==0.21.0 --index-url https://download.pytorch.org/whl/cu118
 pip install -r requirements-gpu.txt
 pip install flash-attn==2.7.3 --no-build-isolation   # optional, ~2x schneller
 pip install "vllm>=0.11.1"                            # optional, Batch-Backend
-jupyter notebook ocr_colab.ipynb
+streamlit run app/app.py                              # oder: jupyter notebook ocr_colab.ipynb
 ```
 
 ### Docker
 
 ```bash
 docker build -t deepseek-ocr .
-docker run --rm -v $(pwd)/scans:/in -v $(pwd)/out:/out deepseek-ocr /in/rechnung.png -o /out --mode gundam --prompt markdown --zip
+# GUI (Default, Port 8513 — Live: dokumenten-ocr.markb.de):
+docker run --rm -p 8513:8513 deepseek-ocr
+# Headless-CLI:
+docker run --rm -v $(pwd)/scans:/in -v $(pwd)/out:/out --entrypoint python deepseek-ocr -m dsocr.cli /in/rechnung.png -o /out --mode gundam --prompt markdown --zip
 ```
 
-> Das Image startet die headless CLI (`python -m dsocr.cli`), nicht mehr eine Streamlit-App.
+> Das Image startet die Streamlit-GUI (`app/app.py`); die headless CLI bleibt über `--entrypoint python -m dsocr.cli` erreichbar.
 
 ---
 
 ## 🖥️ Nutzung
+
+### Streamlit-GUI (Live)
+
+Die GUI läuft live auf **https://dokumenten-ocr.markb.de** (Service `deepseek-ocr-studio`, Port 8513 im Infrastruktur-Deploy).
+
+Lokal:
+
+```bash
+streamlit run app/app.py
+```
+
+Im Browser: Dokumente hochladen → Token-Budget und Kachelraster prüfen → „Analyse starten" → Ergebnis als Markdown/Tabellen/Layout-Export herunterladen.
 
 ### Google Colab
 
@@ -102,7 +118,8 @@ python -m dsocr.cli rechnung.png --prompt locate --query "Gesamtsumme" -o out/
 
 | Komponente | Technologie |
 |---|---|
-| **Ausführung** | Jupyter Notebook / CLI |
+| **GUI** | Streamlit (Port 8513) |
+| **Ausführung** | Streamlit-GUI / Jupyter Notebook / CLI |
 | **OCR-Modell** | DeepSeek-OCR (Vision-Language) |
 | **Backends** | vLLM, HuggingFace Transformers, Demo (CPU) |
 | **PDF** | PyMuPDF |
@@ -114,6 +131,7 @@ python -m dsocr.cli rechnung.png --prompt locate --query "Gesamtsumme" -o out/
 
 ```
 ocr-erkennung/
+├── app/app.py                       # Streamlit-GUI (Einstiegspunkt)
 ├── ocr_colab.ipynb                  # Google-Colab-Einstiegspunkt
 ├── dsocr/
 │   ├── config.py                   # Auflösungsmodi, Prompts, Settings
@@ -122,6 +140,7 @@ ocr-erkennung/
 │   ├── preprocess/                 # Loader, Tiling, Token-Rechnung
 │   ├── engines/                    # vLLM, Transformers, Demo
 │   ├── postprocess/                # Grounding, Markdown, Export
+│   └── ui/                         # Sidebar, Ergebnis-Tabs, Theme
 ├── assets/                         # Screenshots
 ├── Dockerfile
 └── requirements-gpu.txt

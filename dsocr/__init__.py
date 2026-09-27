@@ -1,4 +1,4 @@
-"""Headless DeepSeek-OCR pipeline for notebooks and batch processing.
+"""DeepSeek-OCR Studio — Streamlit front end plus headless pipeline for notebooks and batch processing.
 
 The heavy lifting lives in three layers:
 
