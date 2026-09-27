@@ -1,4 +1,4 @@
-"""Headless batch OCR — the same pipeline the notebook uses.
+"""Headless batch OCR — the same pipeline the Streamlit app and the notebook use.
 
 This replaces upstream's edit-the-config-then-run-the-script workflow::
 

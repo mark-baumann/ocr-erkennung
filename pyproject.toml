@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "deepseek-ocr-studio"
 version = "1.0.0"
-description = "Headless DeepSeek-OCR-Pipeline für Jupyter Notebook und Batch-Verarbeitung."
+description = "DeepSeek-OCR mit Streamlit-GUI und headless Pipeline für Jupyter Notebook und Batch-Verarbeitung."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -16,8 +16,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+app = ["streamlit>=1.40", "markdown>=3.5"]
 gpu = ["transformers==4.46.3", "tokenizers>=0.20.3,<0.21", "einops", "easydict", "addict"]
-dev = ["pytest>=8.0"]
+dev = ["pytest>=8.0", "streamlit>=1.40", "markdown>=3.5"]
 
 [project.scripts]
 dsocr = "dsocr.cli:main"
